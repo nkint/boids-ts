@@ -1,5 +1,5 @@
 import { createFit } from 'canvas-fit-margin-ts'
-import { init } from './scene'
+import { createScene } from './scene'
 
 const scale = window.devicePixelRatio || 1
 const canvas = document.createElement('canvas')
@@ -9,7 +9,7 @@ document.body.style.margin = '0'
 document.body.appendChild(canvas)
 
 function render(width: number, height: number) {
-  init(context, width, height)
+  createScene(context, width, height)
 }
 
 const onResize = () => {

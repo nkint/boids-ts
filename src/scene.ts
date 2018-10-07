@@ -1,7 +1,7 @@
 import { Flock } from './Flock'
 import { Boid, BoidOptions } from './Boid'
 import { RandomSeed, create as createRandom } from 'random-seed'
-import { create as createVector, set } from 'gl-vec2'
+import { create as createVector, set, vec2 } from 'gl-vec2'
 
 const randomGenerator: RandomSeed = createRandom('dudee')
 const random = randomGenerator.floatBetween
@@ -32,7 +32,7 @@ function getBoidOpts(canvasWidth: number, canvasHeight: number): BoidOptions {
   }
 }
 
-export function init(context: CanvasRenderingContext2D, width: number, height: number) {
+export function createScene(context: CanvasRenderingContext2D, width: number, height: number) {
   const flock = new Flock()
 
   for (let i = 0; i < 60; i++) {
@@ -45,10 +45,22 @@ export function init(context: CanvasRenderingContext2D, width: number, height: n
   gradient.addColorStop(1, '#0083b0')
 
   let frameCount = 0
+  let target: vec2 = null
+
+  const onMouseDown = (ev: MouseEvent) => {
+    console.log('on mouse down')
+    target = [300, 300]
+  }
+
+  document.addEventListener('mousedown', onMouseDown)
+
+  if ((module as any).hot) {
+    ;(module as any).hot.dispose(() => document.removeEventListener('mousedown', onMouseDown))
+  }
 
   function loop() {
     frameCount++
-    flock.run()
+    flock.run(target)
 
     context.clearRect(0, 0, width, height)
     context.fillStyle = gradient
@@ -68,6 +80,11 @@ export function init(context: CanvasRenderingContext2D, width: number, height: n
       context.closePath()
       context.fill()
     }
+
+    if (target) {
+      context.strokeRect(target[0] - 50, target[1] - 50, 100, 100)
+    }
+
     requestAnimationFrame(loop)
   }
 

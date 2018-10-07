@@ -10,6 +10,7 @@ import {
   dist,
   len,
 } from 'gl-vec2'
+import { setLen, map } from './gl-vec2-utils'
 
 export type BoidOptions = {
   center: vec2
@@ -59,10 +60,32 @@ export class Boid {
     this.neighborDistance = opts.neighborDistance || 50
   }
 
-  run(boids: ReadonlyArray<Boid>) {
-    this.flock(boids)
+  run(boids: ReadonlyArray<Boid>, target: vec2 = null) {
+    if (target) {
+      this.arrive(target)
+    } else {
+      this.flock(boids)
+    }
+
     this.update()
     this.borders()
+  }
+
+  arrive(target: vec2) {
+    var desired = sub(createVector(), target, this.position) // A vector pointing from the location to the target
+    var d = len(desired)
+    // Scale with arbitrary damping within 100 pixels
+    if (d < 100) {
+      var m = map(d, 0, 100, 0, this.maxspeed)
+      setLen(desired, desired, m)
+    } else {
+      setLen(desired, desired, this.maxspeed)
+    }
+
+    // Steering = Desired minus Velocity
+    var steer = sub(desired, desired, this.velocity)
+    limit(steer, steer, this.maxforce) // Limit to maximum steering force
+    this.applyForce(steer)
   }
 
   applyForce(force: vec2) {

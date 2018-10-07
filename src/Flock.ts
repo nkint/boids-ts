@@ -1,4 +1,5 @@
 import { Boid } from './Boid'
+import { vec2 } from 'gl-vec2'
 
 export class Flock {
   boids: Array<Boid>
@@ -7,9 +8,9 @@ export class Flock {
     this.boids = [] // Initialize the array
   }
 
-  run() {
+  run(target: vec2 = null) {
     for (let boid of this.boids) {
-      boid.run(this.boids) // Passing the entire list of boids to each boid individually
+      boid.run(this.boids, target) // Passing the entire list of boids to each boid individually
     }
   }
 
