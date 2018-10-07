@@ -9,6 +9,7 @@ const randomGenerator: RandomSeed = createRandom('dudee')
 const random = randomGenerator.floatBetween
 
 const CANVAS_WITH_1 = false
+const SAVE_EVERTYTHING = true
 
 function getBoidOpts(canvasWidth: number, canvasHeight: number): BoidOptions {
   const normalizationContant = CANVAS_WITH_1 ? 600 : 1
@@ -36,6 +37,8 @@ function getBoidOpts(canvasWidth: number, canvasHeight: number): BoidOptions {
 
 export function createScene(context: CanvasRenderingContext2D, width: number, height: number) {
   const flock = new Flock()
+  let frameCount = 0
+  let target: vec2 = null
 
   for (let i = 0; i < 60; i++) {
     let b = new Boid(getBoidOpts(CANVAS_WITH_1 ? 1 : width, CANVAS_WITH_1 ? 1 : height))
@@ -46,16 +49,11 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
   gradient.addColorStop(0, '#00b4db')
   gradient.addColorStop(1, '#0083b0')
 
-  let frameCount = 0
-  let target: vec2 = null
-
   const onMouseDown = (ev: MouseEvent) => {
-    console.log('on mouse down')
     target = [300, 300]
   }
 
   document.addEventListener('mousedown', onMouseDown)
-
   if ((module as any).hot) {
     ;(module as any).hot.dispose(() => document.removeEventListener('mousedown', onMouseDown))
   }
@@ -73,14 +71,9 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
 
     for (let i = 0; i < flock.boids.length; ++i) {
       const boid = flock.boids[i]
-
       const x = boid.position[0] * (CANVAS_WITH_1 ? width : 1)
       const y = boid.position[1] * (CANVAS_WITH_1 ? height : 1)
-
-      // Draw a triangle rotated in the direction of velocity
-
-      let theta = heading(boid.velocity) + Math.PI / 2
-
+      const theta = heading(boid.velocity) + Math.PI / 2
       drawBoid(context, x, y, theta, boid.r)
     }
 
@@ -88,8 +81,29 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
       context.strokeRect(target[0] - 50, target[1] - 50, 100, 100)
     }
 
-    requestAnimationFrame(loop)
+    if (!SAVE_EVERTYTHING) {
+      requestAnimationFrame(loop)
+    } else {
+      const data = {
+        boids: flock.boids.map(boid => ({
+          position: [boid.position[0], boid.position[1]],
+          rotation: heading(boid.velocity) + Math.PI / 2,
+        })),
+      }
+      postData(`http://localhost:8080/save/${frameCount}`, data).then(() => loop())
+    }
   }
 
   requestAnimationFrame(loop)
+}
+
+function postData(url = ``, payload = {}) {
+  return fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify(payload),
+  })
 }
