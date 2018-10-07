@@ -8,7 +8,6 @@ import {
   sub,
   normalize,
   dist,
-  div,
   len,
 } from 'gl-vec2'
 import { RandomSeed, create as createRandom } from 'random-seed'
