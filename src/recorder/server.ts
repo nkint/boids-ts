@@ -15,11 +15,11 @@ app.use(function(req, res, next) {
 
 app.post('/save/:id', function(req, res) {
   const filename = `saved-${req.params.id}.json`
-  writeFileSync(filename, req.body)
+  writeFileSync(filename, JSON.stringify(req.body))
   console.log('saved', filename)
   return res.sendStatus(200)
 })
 
 app.listen(8080, function() {
-  console.log('Example app listening on port 8080!')
+  console.log('Recorder app listening on port 8080!')
 })
