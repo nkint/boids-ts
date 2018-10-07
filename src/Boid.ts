@@ -24,6 +24,7 @@ export type BoidOptions = {
   cohesionScale?: number
   desiredSeparation?: number
   neighborDistance?: number
+  arriveRadius?: number
 }
 
 export class Boid {
@@ -41,6 +42,7 @@ export class Boid {
   cohesionScale: number
   desiredSeparation: number
   neighborDistance: number
+  arriveRadius: number
 
   constructor(opts: BoidOptions) {
     this.acceleration = set(createVector(), 0, 0)
@@ -58,6 +60,8 @@ export class Boid {
 
     this.desiredSeparation = opts.desiredSeparation || 25
     this.neighborDistance = opts.neighborDistance || 50
+
+    this.arriveRadius = opts.arriveRadius || 100
   }
 
   run(boids: ReadonlyArray<Boid>, target: vec2 = null) {
@@ -74,9 +78,9 @@ export class Boid {
   arrive(target: vec2) {
     var desired = sub(createVector(), target, this.position) // A vector pointing from the location to the target
     var d = len(desired)
-    // Scale with arbitrary damping within 100 pixels
-    if (d < 100) {
-      var m = map(d, 0, 100, 0, this.maxspeed)
+    // Scale with arbitrary damping within arriveRadius pixels
+    if (d < this.arriveRadius) {
+      var m = map(d, 0, this.arriveRadius, 0, this.maxspeed)
       setLen(desired, desired, m)
     } else {
       setLen(desired, desired, this.maxspeed)
