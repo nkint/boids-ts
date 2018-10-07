@@ -1,6 +1,6 @@
 # boids
 
-> My tstackgl module
+> Flock simulation and boids
 
 [![screen](http://i.imgur.com/example.png)](http://nkint.github.io/boids/)
 
@@ -8,44 +8,17 @@
 
 <!-- iframe: http://nkint.github.io/boids/index.html -->
 
-## Install
+Flock simulation with _canvas_, _gl-vec2_ and _typescript_.
 
-```
-npm install boids
-```
+Code is not optimized but slavishly ported from Nature of Code ([chapter 6](https://natureofcode.com/book/chapter-6-autonomous-agents/)).
+Go Daniel Shiffman, go!
 
-or
+For the original code see here:
 
-```
-yarn add boids
-```
+- https://github.com/shiffman/The-Nature-of-Code-Examples-p5.js/tree/master/chp06_agents/NOC_6_02_Arrive
+- https://github.com/shiffman/The-Nature-of-Code-Examples-p5.js/tree/master/chp06_agents/NOC_6_09_Flocking
 
 ## Usage
-
-```js
-import boids from 'boids'
-
-// ...
-```
-
-## API
-
-### boids(input, [options])
-
-#### input
-
-Type: `string`
-
-Lorem ipsum.
-
-#### options
-
-##### foo
-
-Type: `boolean`<br>
-Default: `false`
-
-Lorem ipsum.
 
 ## License
 
