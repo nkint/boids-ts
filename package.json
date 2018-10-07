@@ -1,9 +1,9 @@
 {
-  "name": "boids",
+  "name": "boids-ts",
   "version": "0.0.0",
   "description": "My tstackgl module",
   "license": "MIT",
-  "repository": "nkint/boids",
+  "repository": "nkint/boids-ts",
   "author": {
     "name": "alberto",
     "email": "alberto.massa@ymail.com",

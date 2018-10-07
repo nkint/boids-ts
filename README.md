@@ -20,6 +20,16 @@ For the original code see here:
 
 ## Usage
 
+install
+play, record
+let vs const
+
+## TODO:
+
+- static png
+- deploy demo
+- play saved frame
+
 ## License
 
 MIT © [alberto](https://github.com/nkint)

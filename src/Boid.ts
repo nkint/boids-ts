@@ -76,33 +76,32 @@ export class Boid {
   }
 
   arrive(target: vec2) {
-    var desired = sub(createVector(), target, this.position) // A vector pointing from the location to the target
-    var d = len(desired)
+    const desired = sub(createVector(), target, this.position) // A vector pointing from the location to the target
+    const d = len(desired)
     // Scale with arbitrary damping within arriveRadius pixels
     if (d < this.arriveRadius) {
-      var m = map(d, 0, this.arriveRadius, 0, this.maxspeed)
+      const m = map(d, 0, this.arriveRadius, 0, this.maxspeed)
       setLen(desired, desired, m)
     } else {
       setLen(desired, desired, this.maxspeed)
     }
 
     // Steering = Desired minus Velocity
-    var steer = sub(desired, desired, this.velocity)
+    const steer = sub(desired, desired, this.velocity)
     limit(steer, steer, this.maxforce) // Limit to maximum steering force
     this.applyForce(steer)
   }
 
   applyForce(force: vec2) {
     // We could add mass here if we want A = F / M
-    // this.acceleration.add(force)
     add(this.acceleration, this.acceleration, force)
   }
 
   // We accumulate a new acceleration each time based on three rules
   flock(boids: ReadonlyArray<Boid>) {
-    let sep = this.separate(boids) // Separation
-    let ali = this.align(boids) // Alignment
-    let coh = this.cohesion(boids) // Cohesion
+    const sep = this.separate(boids) // Separation
+    const ali = this.align(boids) // Alignment
+    const coh = this.cohesion(boids) // Cohesion
     // Arbitrarily weight these forces
     scale(sep, sep, this.separationScale)
     scale(ali, ali, this.alignScale)
@@ -127,12 +126,12 @@ export class Boid {
   // A method that calculates and applies a steering force towards a target
   // STEER = DESIRED MINUS VELOCITY
   seek(target: vec2) {
-    let desired = sub([], target, this.position) // A vector pointing from the location to the target
+    const desired = sub([], target, this.position) // A vector pointing from the location to the target
     // Normalize desired and scale to maximum speed
     normalize(desired, desired)
     scale(desired, desired, this.maxspeed)
     // Steering = Desired minus Velocity
-    let steer = sub([], desired, this.velocity)
+    const steer = sub([], desired, this.velocity)
     limit(steer, steer, this.maxforce) // Limit to maximum steering force
     return steer
   }
@@ -148,16 +147,16 @@ export class Boid {
   // Separation
   // Method checks for nearby boids and steers away
   separate(boids: ReadonlyArray<Boid>) {
-    let desiredseparation = this.desiredSeparation
-    let steer = set(createVector(), 0, 0)
+    const desiredseparation = this.desiredSeparation
+    const steer = set(createVector(), 0, 0)
     let count = 0
     // For every boid in the system, check if it's too close
     for (let i = 0; i < boids.length; i++) {
-      let d = dist(this.position, boids[i].position)
+      const d = dist(this.position, boids[i].position)
       // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
       if (d > 0 && d < desiredseparation) {
         // Calculate vector pointing away from neighbor
-        let diff = sub([], this.position, boids[i].position)
+        const diff = sub([], this.position, boids[i].position)
         normalize(diff, diff)
         scale(diff, diff, 1 / d) // Weight by distance
         add(steer, steer, diff)
@@ -184,11 +183,11 @@ export class Boid {
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
   align(boids: ReadonlyArray<Boid>) {
-    let neighborDistance = this.neighborDistance
-    let sum = set(createVector(), 0, 0)
+    const neighborDistance = this.neighborDistance
+    const sum = set(createVector(), 0, 0)
     let count = 0
     for (let i = 0; i < boids.length; i++) {
-      let d = dist(this.position, boids[i].position)
+      const d = dist(this.position, boids[i].position)
       if (d > 0 && d < neighborDistance) {
         add(sum, sum, boids[i].velocity)
         count++
@@ -198,7 +197,7 @@ export class Boid {
       scale(sum, sum, 1 / count)
       normalize(sum, sum)
       scale(sum, sum, this.maxspeed)
-      let steer = sub(sum, sum, this.velocity)
+      const steer = sub(sum, sum, this.velocity)
       limit(steer, steer, this.maxforce)
       return steer
     } else {
@@ -209,11 +208,11 @@ export class Boid {
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   cohesion(boids: ReadonlyArray<Boid>) {
-    let neighborDistance = this.neighborDistance
-    let sum = set(createVector(), 0, 0) // Start with empty vector to accumulate all locations
+    const neighborDistance = this.neighborDistance
+    const sum = set(createVector(), 0, 0) // Start with empty vector to accumulate all locations
     let count = 0
     for (let i = 0; i < boids.length; i++) {
-      let d = dist(this.position, boids[i].position)
+      const d = dist(this.position, boids[i].position)
       if (d > 0 && d < neighborDistance) {
         add(sum, sum, boids[i].position) // Add location
         count++
