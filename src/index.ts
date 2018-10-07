@@ -1,6 +1,4 @@
 import { createFit } from 'canvas-fit-margin-ts'
-import { Flock } from './Flock'
-import { Boid } from './Boid'
 import { init } from './scene'
 
 const scale = window.devicePixelRatio || 1
@@ -17,7 +15,6 @@ function render(width: number, height: number) {
 const onResize = () => {
   const [width, height] = fit()
   render(width * scale, height * scale)
-  console.log(width, height)
 }
 
 onResize()
