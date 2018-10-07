@@ -9,7 +9,7 @@ const randomGenerator: RandomSeed = createRandom('dudee')
 const random = randomGenerator.floatBetween
 
 const CANVAS_WITH_1 = false
-const SAVE_EVERTYTHING = true
+const SAVE_EVERTYTHING = false
 
 function getBoidOpts(canvasWidth: number, canvasHeight: number): BoidOptions {
   const normalizationContant = CANVAS_WITH_1 ? 600 : 1
