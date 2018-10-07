@@ -10,11 +10,20 @@ import {
   dist,
   len,
 } from 'gl-vec2'
-import { RandomSeed, create as createRandom } from 'random-seed'
 
-const randomGenerator: RandomSeed = createRandom('dudee')
-
-const random = randomGenerator.floatBetween
+export type BoidOptions = {
+  center: vec2
+  canvasSize: vec2
+  velocity?: vec2
+  r?: number
+  maxspeed?: number
+  maxforce?: number
+  separationScale?: number
+  alignScale?: number
+  cohesionScale?: number
+  desiredSeparation?: number
+  neighborDistance?: number
+}
 
 export class Boid {
   acceleration: vec2
@@ -26,15 +35,28 @@ export class Boid {
   width: number
   height: number
 
-  constructor(centerX: number, centerY: number, canvasWidth: number, canvasHeight: number) {
+  separationScale: number
+  alignScale: number
+  cohesionScale: number
+  desiredSeparation: number
+  neighborDistance: number
+
+  constructor(opts: BoidOptions) {
     this.acceleration = set(createVector(), 0, 0)
-    this.velocity = set(createVector(), random(-1, 1), random(-1, 1))
-    this.position = set(createVector(), centerX, centerY)
-    this.r = 3.0
-    this.maxspeed = 3 // Maximum speed
-    this.maxforce = 0.05 // Maximum steering force
-    this.width = canvasWidth
-    this.height = canvasHeight
+    this.velocity = set(createVector(), opts.velocity[0], opts.velocity[1])
+    this.position = set(createVector(), opts.center[0], opts.center[1])
+    this.r = opts.r || 3
+    this.maxspeed = opts.maxspeed || 3 // Maximum speed
+    this.maxforce = opts.maxforce || 0.05 // Maximum steering force
+    this.width = opts.canvasSize[0]
+    this.height = opts.canvasSize[1]
+
+    this.separationScale = opts.separationScale || 1.5
+    this.alignScale = opts.alignScale || 1.0
+    this.cohesionScale = opts.cohesionScale || 1.0
+
+    this.desiredSeparation = opts.desiredSeparation || 25
+    this.neighborDistance = opts.neighborDistance || 50
   }
 
   run(boids: ReadonlyArray<Boid>) {
@@ -55,9 +77,9 @@ export class Boid {
     let ali = this.align(boids) // Alignment
     let coh = this.cohesion(boids) // Cohesion
     // Arbitrarily weight these forces
-    scale(sep, sep, 1.5)
-    scale(ali, ali, 1.0)
-    scale(coh, coh, 1.0)
+    scale(sep, sep, this.separationScale)
+    scale(ali, ali, this.alignScale)
+    scale(coh, coh, this.cohesionScale)
     // Add the force vectors to acceleration
     this.applyForce(sep)
     this.applyForce(ali)
@@ -115,7 +137,7 @@ export class Boid {
   // Separation
   // Method checks for nearby boids and steers away
   separate(boids: ReadonlyArray<Boid>) {
-    let desiredseparation = 25.0
+    let desiredseparation = this.desiredSeparation
     let steer = set(createVector(), 0, 0)
     let count = 0
     // For every boid in the system, check if it's too close
@@ -151,12 +173,12 @@ export class Boid {
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
   align(boids: ReadonlyArray<Boid>) {
-    let neighbordist = 50
+    let neighborDistance = this.neighborDistance
     let sum = set(createVector(), 0, 0)
     let count = 0
     for (let i = 0; i < boids.length; i++) {
       let d = dist(this.position, boids[i].position)
-      if (d > 0 && d < neighbordist) {
+      if (d > 0 && d < neighborDistance) {
         add(sum, sum, boids[i].velocity)
         count++
       }
@@ -176,12 +198,12 @@ export class Boid {
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
   cohesion(boids: ReadonlyArray<Boid>) {
-    let neighbordist = 50
+    let neighborDistance = this.neighborDistance
     let sum = set(createVector(), 0, 0) // Start with empty vector to accumulate all locations
     let count = 0
     for (let i = 0; i < boids.length; i++) {
       let d = dist(this.position, boids[i].position)
-      if (d > 0 && d < neighbordist) {
+      if (d > 0 && d < neighborDistance) {
         add(sum, sum, boids[i].position) // Add location
         count++
       }
