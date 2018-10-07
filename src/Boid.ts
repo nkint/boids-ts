@@ -38,7 +38,7 @@ export class Boid {
     this.height = canvasHeight
   }
 
-  run(boids: Array<Boid>) {
+  run(boids: ReadonlyArray<Boid>) {
     this.flock(boids)
     this.update()
     this.borders()
@@ -51,7 +51,7 @@ export class Boid {
   }
 
   // We accumulate a new acceleration each time based on three rules
-  flock(boids: Array<Boid>) {
+  flock(boids: ReadonlyArray<Boid>) {
     let sep = this.separate(boids) // Separation
     let ali = this.align(boids) // Alignment
     let coh = this.cohesion(boids) // Cohesion
@@ -115,7 +115,7 @@ export class Boid {
 
   // Separation
   // Method checks for nearby boids and steers away
-  separate(boids: Array<Boid>) {
+  separate(boids: ReadonlyArray<Boid>) {
     let desiredseparation = 25.0
     let steer = set(createVector(), 0, 0)
     let count = 0
@@ -151,7 +151,7 @@ export class Boid {
 
   // Alignment
   // For every nearby boid in the system, calculate the average velocity
-  align(boids: Array<Boid>) {
+  align(boids: ReadonlyArray<Boid>) {
     let neighbordist = 50
     let sum = set(createVector(), 0, 0)
     let count = 0
@@ -176,7 +176,7 @@ export class Boid {
 
   // Cohesion
   // For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
-  cohesion(boids: Array<Boid>) {
+  cohesion(boids: ReadonlyArray<Boid>) {
     let neighbordist = 50
     let sum = set(createVector(), 0, 0) // Start with empty vector to accumulate all locations
     let count = 0
