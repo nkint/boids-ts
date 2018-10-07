@@ -2,6 +2,8 @@ import { Flock } from './Flock'
 import { Boid, BoidOptions } from './Boid'
 import { RandomSeed, create as createRandom } from 'random-seed'
 import { create as createVector, set, vec2 } from 'gl-vec2'
+import { heading } from './gl-vec2-utils'
+import { drawBoid } from './draw-utils'
 
 const randomGenerator: RandomSeed = createRandom('dudee')
 const random = randomGenerator.floatBetween
@@ -67,6 +69,7 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
     context.fillRect(0, 0, width, height)
 
     context.fillStyle = 'black'
+    context.strokeStyle = 'black'
 
     for (let i = 0; i < flock.boids.length; ++i) {
       const boid = flock.boids[i]
@@ -74,11 +77,11 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
       const x = boid.position[0] * (CANVAS_WITH_1 ? width : 1)
       const y = boid.position[1] * (CANVAS_WITH_1 ? height : 1)
 
-      context.beginPath()
-      context.moveTo(x, y)
-      context.arc(x, y, 2, 0, Math.PI * 2)
-      context.closePath()
-      context.fill()
+      // Draw a triangle rotated in the direction of velocity
+
+      let theta = heading(boid.velocity) + Math.PI / 2
+
+      drawBoid(context, x, y, theta, boid.r)
     }
 
     if (target) {

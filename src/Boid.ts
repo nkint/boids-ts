@@ -133,22 +133,6 @@ export class Boid {
     return steer
   }
 
-  render() {
-    // // Draw a triangle rotated in the direction of velocity
-    // let theta = this.velocity.heading() + radians(90)
-    // fill(127)
-    // stroke(200)
-    // push()
-    // translate(this.position.x, this.position.y)
-    // rotate(theta)
-    // beginShape()
-    // vertex(0, -this.r * 2)
-    // vertex(-this.r, this.r * 2)
-    // vertex(this.r, this.r * 2)
-    // endShape(CLOSE)
-    // pop()
-  }
-
   // Wraparound
   borders() {
     if (this.position[0] < -this.r) this.position[0] = this.width + this.r

@@ -9,3 +9,7 @@ export function setLen(out: vec2, a: vec2, x: number) {
   scale(out, out, x)
   return out
 }
+
+export function heading(a: vec2) {
+  return Math.atan2(a[1], a[0])
+}
