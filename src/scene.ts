@@ -11,27 +11,28 @@ const random = randomGenerator.floatBetween
 const CANVAS_WITH_1 = false
 const SAVE_EVERTYTHING = false
 
+const normalizationConst = CANVAS_WITH_1 ? 600 : 1
+
 function getBoidOpts(canvasWidth: number, canvasHeight: number): BoidOptions {
-  const normalizationContant = CANVAS_WITH_1 ? 600 : 1
   return {
     center: [canvasWidth / 2, canvasHeight / 2],
     canvasSize: [canvasWidth, canvasHeight],
 
     velocity: set(
       createVector(),
-      random(-1, 1) / normalizationContant,
-      random(-1, 1) / normalizationContant,
+      random(-1, 1) / normalizationConst,
+      random(-1, 1) / normalizationConst,
     ),
-    r: 3 / normalizationContant,
-    maxspeed: 3 / normalizationContant,
-    maxforce: 0.05 / normalizationContant,
+    r: 3 / normalizationConst,
+    maxspeed: 3 / normalizationConst,
+    maxforce: 0.05 / normalizationConst,
 
     separationScale: 1.5,
     alignScale: 1.0,
     cohesionScale: 1.0,
 
-    desiredSeparation: 25 / normalizationContant,
-    neighborDistance: 50 / normalizationContant,
+    desiredSeparation: 25 / normalizationConst,
+    neighborDistance: 50 / normalizationConst,
   }
 }
 
@@ -74,7 +75,7 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
       const x = boid.position[0] * (CANVAS_WITH_1 ? width : 1)
       const y = boid.position[1] * (CANVAS_WITH_1 ? height : 1)
       const theta = heading(boid.velocity) + Math.PI / 2
-      drawBoid(context, x, y, theta, boid.r)
+      drawBoid(context, x, y, theta, boid.r * (CANVAS_WITH_1 ? normalizationConst : 1))
     }
 
     if (target) {
