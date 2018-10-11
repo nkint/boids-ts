@@ -1,4 +1,4 @@
-# boids
+# boids-ts
 
 > Flock simulation and boids
 
