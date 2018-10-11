@@ -51,7 +51,7 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
   gradient.addColorStop(1, '#0083b0')
 
   const onMouseDown = (ev: MouseEvent) => {
-    target = [300, 300]
+    target = [300, 600]
   }
 
   document.addEventListener('mousedown', onMouseDown)
@@ -88,7 +88,7 @@ export function createScene(context: CanvasRenderingContext2D, width: number, he
       const data = {
         boids: flock.boids.map(boid => ({
           position: [boid.position[0], boid.position[1]],
-          rotation: heading(boid.velocity) + Math.PI / 2,
+          rotation: heading(boid.smoothVelocity) + Math.PI / 2,
         })),
       }
       postData(`http://localhost:8080/save/${frameCount}`, data).then(() => loop())

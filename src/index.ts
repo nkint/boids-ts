@@ -6,7 +6,7 @@ const canvas = document.createElement('canvas')
 const context = canvas.getContext('2d')
 const fit = createFit(canvas, { scale })
 document.body.style.margin = '0'
-document.body.appendChild(canvas)
+document.querySelector('.canvas-container').appendChild(canvas)
 
 function render(width: number, height: number) {
   createScene(context, width, height)
