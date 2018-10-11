@@ -21,7 +21,7 @@
     "clean": "rm -rf dist; rm -rf demo",
     "build-dist": "microbundle",
     "build-demo": "parcel build src/demo/index.html --out-dir demo --public-url ./",
-    "build": "npm run clean; npm run build-dist; npm run buidl-demo",
+    "build": "npm run clean; npm run build-dist; npm run build-demo",
     "deploy": "git subtree push --prefix demo origin gh-pages",
     "start": "parcel src/demo/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
