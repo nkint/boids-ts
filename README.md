@@ -2,7 +2,7 @@
 
 > Flock simulation and boids
 
-[![screen](http://i.imgur.com/example.png)](http://nkint.github.io/boids-ts/)
+[![screen](screen.png)](http://nkint.github.io/boids-ts/)
 
 [(demo)](http://nkint.github.io/boids-ts/)
 
