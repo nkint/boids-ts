@@ -6,7 +6,7 @@
 
 [(demo)](http://nkint.github.io/boids-ts/)
 
-<!-- iframe: http://nkint.github.io/boids/index.html -->
+<!-- iframe: http://nkint.github.io/boids-ts/index.html -->
 
 Flock simulation with _canvas_, _gl-vec2_ and _typescript_.
 
