@@ -1,8 +1,8 @@
-import { Flock } from './Flock'
-import { Boid, BoidOptions } from './Boid'
+import { Flock } from '../Flock'
+import { Boid, BoidOptions } from '../Boid'
 import { RandomSeed, create as createRandom } from 'random-seed'
 import { create as createVector, set, vec2 } from 'gl-vec2'
-import { heading } from './gl-vec2-utils'
+import { heading } from '../gl-vec2-utils'
 import { drawBoid } from './draw-utils'
 
 const randomGenerator: RandomSeed = createRandom('dudee')

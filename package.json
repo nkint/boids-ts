@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build": "parcel build src/index.html",
-    "start": "parcel src/index.html",
+    "start": "parcel src/demo/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "source": "src/index.ts",
