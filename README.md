@@ -15,8 +15,8 @@ Go Daniel Shiffman, go!
 
 For the original code see here:
 
-- https://github.com/shiffman/The-Nature-of-Code-Examples-p5.js/tree/master/chp06_agents/NOC_6_02_Arrive
 - https://github.com/shiffman/The-Nature-of-Code-Examples-p5.js/tree/master/chp06_agents/NOC_6_09_Flocking
+- https://github.com/shiffman/The-Nature-of-Code-Examples-p5.js/tree/master/chp06_agents/NOC_6_02_Arrive
 
 For a - maybe better, less OOP, more optimized - boid package see [hughsk boid](https://github.com/hughsk/boids)
 
