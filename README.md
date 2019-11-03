@@ -26,7 +26,6 @@ For a - maybe better, less OOP, more optimized - boid package see [hughsk boid](
 import { Flock, Boids, heading } from 'boid-ts'
 
 const flock = new Flock()
-let target: vec2 = null
 
 for (let i = 0; i < 60; i++) {
   const opts = {
